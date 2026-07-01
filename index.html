@@ -551,7 +551,7 @@ details.reg-note .reg-body li {
 <div class="page">
 
   <header>
-    <div class="header-eyebrow">114 年度適用（2025 年報稅）</div>
+    <div class="header-eyebrow">115 年度適用（2026 年報稅）</div>
     <h1>綜合所得稅<br>計算器</h1>
     <div class="header-sub">支援境內所得、境外所得及最低稅負制（AMT）試算</div>
   </header>
@@ -574,7 +574,7 @@ details.reg-note .reg-body li {
           <div class="field">
             <label>撫養人數（含本人）</label>
             <input type="number" id="dependents" min="1" max="10" value="1" />
-            <div class="hint">每人免稅額 NT$97,000</div>
+            <div class="hint">每人免稅額 NT$101,000</div>
           </div>
         </div>
       </div>
@@ -585,7 +585,7 @@ details.reg-note .reg-body li {
           <div class="field">
             <label>薪資所得（元）</label>
             <input type="number" id="salary" min="0" value="1200000" />
-            <div class="hint">特別扣除額 NT$218,000</div>
+            <div class="hint">特別扣除額 NT$227,000</div>
           </div>
           <div class="field">
             <label>其他所得（元）</label>
@@ -593,14 +593,45 @@ details.reg-note .reg-body li {
             <div class="hint">租金、利息、執行業務等</div>
           </div>
           <div class="field">
-            <label>投資收益（元）</label>
+            <label>其他投資收益（元）</label>
             <input type="number" id="investment" min="0" value="0" />
-            <div class="hint">股利、基金配息等</div>
+            <div class="hint">利息、基金配息等（不含股利）</div>
           </div>
           <div class="field">
             <label>列舉扣除額（元）</label>
             <input type="number" id="itemized" min="0" value="0" />
             <div class="hint">0 則自動採標準扣除額擇高</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; padding-top:12px; border-top: 1px solid var(--border);">
+          <div style="font-size:12px; color:var(--text-muted); margin-bottom:10px; font-family:'DM Mono',monospace; letter-spacing:0.06em; text-transform:uppercase;">股利所得（合併／分開計稅擇優）</div>
+          <div class="field-grid">
+            <div class="field">
+              <label>股利所得合計（元）</label>
+              <input type="number" id="dividend" min="0" value="0" />
+              <div class="hint">現金股利＋股票股利面額</div>
+              <details class="reg-note">
+                <summary>計稅方式說明</summary>
+                <div class="reg-body">
+                  股利所得可選擇以下兩種方式擇優申報，系統會<strong>自動試算並採用稅額較低者</strong>：<br>
+                  <ul>
+                    <li><strong>合併計稅：</strong>股利併入綜合所得總額，依累進稅率課稅，並可獲股利可抵減稅額（股利 × 8.5%，每戶上限 8 萬元），抵減有餘可退稅。一般適用稅率 5%–20% 者較有利。</li>
+                    <li><strong>分開計稅：</strong>股利不計入綜合所得總額，以單一稅率 <strong>28%</strong> 分開計算，再與其他所得應納稅額合併報繳。無抵減額度上限。一般適用稅率 30%–40% 的高所得者或大股東較有利。</li>
+                  </ul>
+                  ⚠️ 採分開計稅者，股利所得不得列入儲蓄投資特別扣除額，且會被計入最低稅負制（基本所得額）。
+                </div>
+              </details>
+            </div>
+            <div class="field">
+              <label>強制計稅方式</label>
+              <select id="dividend-mode">
+                <option value="auto">自動擇優（建議）</option>
+                <option value="combined">強制合併計稅</option>
+                <option value="separate">強制分開計稅（28%）</option>
+              </select>
+              <div class="hint">預設自動比較兩者取較低稅額</div>
+            </div>
           </div>
         </div>
         <div style="margin-top:12px; padding-top:12px; border-top: 1px solid var(--border);">
@@ -806,6 +837,10 @@ details.reg-note .reg-body li {
           <span>應稅所得淨額</span>
           <span class="val" id="r-taxable">—</span>
         </div>
+        <div class="result-row" id="r-dividend-row" style="display:none;">
+          <span>股利所得稅額</span>
+          <span class="val" id="r-dividend">—</span>
+        </div>
         <div class="result-row" id="r-credit-row" style="display:none;">
           <span>境外稅額扣抵</span>
           <span class="val green" id="r-credit">—</span>
@@ -828,7 +863,7 @@ details.reg-note .reg-body li {
 
       <div class="card" style="font-size:12px; color: var(--text-muted); line-height:1.8; padding: 1.25rem;">
         <strong style="display:block; margin-bottom:6px; color:var(--text);">注意事項</strong>
-        本計算器依 114 年度（2025 年申報）稅率試算，僅供參考，不構成正式稅務建議。實際稅額可能因身障扣除、教育費、醫藥費等特殊情形而有所不同，建議洽詢稅務專業人員或參閱財政部國稅局公告。
+        本計算器依 115 年度（2026 年申報）稅率試算，僅供參考，不構成正式稅務建議。實際稅額可能因身障扣除、教育費、醫藥費等特殊情形而有所不同，建議洽詢稅務專業人員或參閱財政部國稅局公告。
       </div>
     </div>
 
@@ -895,37 +930,40 @@ details.reg-note .reg-body li {
   </div>
 
   <footer>
-    依據《所得稅法》及財政部 114 年度公告試算 ・ 本工具僅供參考，不代表正式稅務建議
+    依據《所得稅法》及財政部 115 年度公告試算 ・ 本工具僅供參考，不代表正式稅務建議
   </footer>
 
 </div>
 
 <script>
-// 114年度課稅級距（速算公式：所得淨額×稅率－累進差額）
-// cumBelow = 前各級距累積稅額（等效於速算累進差額的另一表達）
+// 115年度課稅級距（速算公式：所得淨額×稅率－累進差額）
+// 財政部114年11月公告，116年5月申報適用
 const BRACKETS = [
-  { min: 0,        max: 590000,   rate: 0.05, cumBelow: 0 },
-  { min: 590001,   max: 1330000,  rate: 0.12, cumBelow: 29500 },
-  { min: 1330001,  max: 2660000,  rate: 0.20, cumBelow: 118300 },
-  { min: 2660001,  max: 4980000,  rate: 0.30, cumBelow: 384300 },
-  { min: 4980001,  max: Infinity, rate: 0.40, cumBelow: 878300 },
+  { min: 0,        max: 610000,   rate: 0.05, cumBelow: 0 },
+  { min: 610001,   max: 1380000,  rate: 0.12, cumBelow: 30500 },
+  { min: 1380001,  max: 2770000,  rate: 0.20, cumBelow: 122900 },
+  { min: 2770001,  max: 5190000,  rate: 0.30, cumBelow: 400900 },
+  { min: 5190001,  max: Infinity, rate: 0.40, cumBelow: 1126900 },
 ];
 
-const SALARY_DEDUCTION = 218000;
-const STD_SINGLE = 131000;
-const STD_MARRIED = 262000;
-const EXEMPTION = 97000;
+const SALARY_DEDUCTION = 227000;
+const STD_SINGLE = 136000;
+const STD_MARRIED = 272000;
+const EXEMPTION = 101000;
 const BASIC_LIVING = 213000;
 const AMT_BASIC_EXCLUSION = 1000000;
 const AMT_DEDUCTION = 7500000;
 const AMT_RATE = 0.20;
+const DIVIDEND_CREDIT_RATE = 0.085;
+const DIVIDEND_CREDIT_CAP = 80000;
+const DIVIDEND_SEPARATE_RATE = 0.28;
 
 function fmt(n) {
   return Math.round(n).toLocaleString('zh-TW');
 }
 
-// 速算公式用的累進差額（財政部公告值）
-const PROGRESSIVE_DEDUCTION = [0, 41300, 147700, 413700, 878300];
+// 速算公式用的累進差額（財政部 115 年度公告值）
+const PROGRESSIVE_DEDUCTION = [0, 42700, 153100, 430100, 949100];
 
 function calcBracketTax(income) {
   if (income <= 0) return 0;
@@ -948,6 +986,8 @@ function calculate() {
   const salary = getVal('salary');
   const otherIncome = getVal('other-income');
   const investment = getVal('investment');
+  const dividend = getVal('dividend');
+  const dividendMode = document.getElementById('dividend-mode').value;
   const itemized = getVal('itemized');
   const savingsDed = Math.min(getVal('savings-ded'), 270000);
   const eduDed = getVal('edu-ded');
@@ -977,17 +1017,41 @@ function calculate() {
   const basicLivingTotal = BASIC_LIVING * dependents;
   const deductionBase = exemption + generalDeduction + specialDeduction;
   const basicLivingExtra = Math.max(0, basicLivingTotal - deductionBase);
-
-  const grossIncome = salary + otherIncome + investment;
   const totalDed = deductionBase + basicLivingExtra;
-  const taxableIncome = Math.max(0, grossIncome - totalDed);
-  const regularTax = calcBracketTax(taxableIncome);
 
-  // AMT
+  // === 股利所得：合併計稅 vs 分開計稅 擇優 ===
+  // 合併計稅：股利併入綜合所得總額，課累進稅率，可抵減 股利×8.5%（上限8萬）
+  const grossIncomeCombined = salary + otherIncome + investment + dividend;
+  const taxableCombined = Math.max(0, grossIncomeCombined - totalDed);
+  const taxBeforeCreditCombined = calcBracketTax(taxableCombined);
+  const dividendCredit = Math.min(dividend * DIVIDEND_CREDIT_RATE, DIVIDEND_CREDIT_CAP);
+  const taxCombined = taxBeforeCreditCombined - dividendCredit; // 可為負數（退稅）
+
+  // 分開計稅：股利不計入綜合所得總額，單獨以 28% 計算，與其他所得稅額合併報繳
+  const grossIncomeSeparate = salary + otherIncome + investment;
+  const taxableSeparate = Math.max(0, grossIncomeSeparate - totalDed);
+  const taxOtherSeparate = calcBracketTax(taxableSeparate);
+  const dividendTaxSeparate = dividend * DIVIDEND_SEPARATE_RATE;
+  const taxSeparate = taxOtherSeparate + dividendTaxSeparate;
+
+  // 擇優或強制模式
+  let useSeparateMode;
+  if (dividendMode === 'combined') useSeparateMode = false;
+  else if (dividendMode === 'separate') useSeparateMode = true;
+  else useSeparateMode = dividend > 0 && taxSeparate < taxCombined;
+
+  const grossIncome = useSeparateMode ? grossIncomeSeparate : grossIncomeCombined;
+  const taxableIncome = useSeparateMode ? taxableSeparate : taxableCombined;
+  const regularTax = useSeparateMode ? taxSeparate : taxCombined;
+  const dividendForAMT = useSeparateMode ? dividend : 0; // 分開計稅股利需計入基本所得額(AMT)
+  const appliedDividendCredit = useSeparateMode ? 0 : dividendCredit;
+
+  // AMT：境外所得 + 分開計稅股利 需計入基本所得額
   let amtTax = 0;
   let amtApplies = false;
-  if (hasForeign && foreignIncome >= AMT_BASIC_EXCLUSION) {
-    const basicIncome = taxableIncome + foreignIncome;
+  const amtIncludable = foreignIncome + dividendForAMT;
+  if ((hasForeign && foreignIncome >= AMT_BASIC_EXCLUSION) || dividendForAMT > 0) {
+    const basicIncome = taxableIncome + amtIncludable;
     const amtBase = Math.max(0, basicIncome - AMT_DEDUCTION);
     amtTax = amtBase * AMT_RATE;
     amtApplies = amtTax > regularTax;
@@ -996,13 +1060,16 @@ function calculate() {
   const preCreditTax = amtApplies ? amtTax : regularTax;
   const totalIncome = grossIncome + foreignIncome;
   const foreignRatio = totalIncome > 0 ? foreignIncome / totalIncome : 0;
-  const foreignCredit = Math.min(foreignTaxPaid, preCreditTax * foreignRatio);
+  const foreignCredit = Math.min(foreignTaxPaid, Math.max(0, preCreditTax) * foreignRatio);
   const finalTax = Math.max(0, preCreditTax - foreignCredit);
   const effRate = totalIncome > 0 ? finalTax / totalIncome : 0;
 
   // Update results
   document.getElementById('final-tax-display').innerHTML = `<span>NT$</span>${fmt(finalTax)}`;
-  document.getElementById('tax-method-label').textContent = amtApplies ? '最低稅負制（AMT）' : '一般累進稅率';
+  const methodParts = [];
+  if (amtApplies) methodParts.push('最低稅負制（AMT）'); else methodParts.push('一般累進稅率');
+  if (dividend > 0) methodParts.push(useSeparateMode ? '股利分開計稅 28%' : '股利合併計稅');
+  document.getElementById('tax-method-label').textContent = methodParts.join(' ・ ');
   document.getElementById('r-gross').textContent = 'NT$' + fmt(grossIncome);
   document.getElementById('r-general-ded-label').textContent = usingStandard ? '一般扣除額（標準）' : '一般扣除額（列舉）';
   document.getElementById('r-deductions').textContent = '- NT$' + fmt(generalDeduction);
@@ -1015,6 +1082,18 @@ function calculate() {
     blRow.style.display = 'none';
   }
   document.getElementById('r-taxable').textContent = 'NT$' + fmt(taxableIncome);
+
+  const divRow = document.getElementById('r-dividend-row');
+  if (dividend > 0) {
+    divRow.style.display = 'flex';
+    if (useSeparateMode) {
+      document.getElementById('r-dividend').textContent = '+ NT$' + fmt(dividendTaxSeparate) + '（28%分開稅額）';
+    } else {
+      document.getElementById('r-dividend').textContent = '- NT$' + fmt(appliedDividendCredit) + '（8.5%可抵減稅額）';
+    }
+  } else {
+    divRow.style.display = 'none';
+  }
 
   const creditRow = document.getElementById('r-credit-row');
   if (foreignCredit > 0) {
@@ -1208,7 +1287,7 @@ function initChart(fixedDed, basicLivingTotal, currentIncome, foreignIncome) {
           ticks: {
             color: '#A89F90',
             font: { family: "'DM Mono', monospace", size: 10 },
-            callback: v => v >= 1000 ? (v / 10000).toFixed(0) + '萬' : v,
+            callback: v => v.toLocaleString('zh-TW'),
             maxTicksLimit: 6,
           },
           title: {
@@ -1547,3 +1626,4 @@ calculate();
 </script>
 </body>
 </html>
+
